@@ -1,0 +1,4 @@
+# Configurações locais e uploads
+config.php
+/uploads/*
+!/uploads/.gitkeep
