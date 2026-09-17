@@ -43,4 +43,4 @@ Necessário possuir um ambiente de servidor web local instalado (ex: **XAMPP**, 
 ### Passo a Passo
 1. Clone o repositório dentro do diretório do seu servidor local (ex: `htdocs` no XAMPP):
    ```bash
-   git clone [https://github.com/estalone/PI-SIGAS.git](https://github.com/estalone/PI-SIGAS.git)
+   git clone [https://github.com/Estalone/PI-SIGAS.git]
