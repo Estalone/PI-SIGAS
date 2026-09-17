@@ -1,4 +1,4 @@
 # Configurações locais e uploads
 config.php
-/uploads/*
+/restricted/*
 !/uploads/.gitkeep
