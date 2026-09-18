@@ -1,0 +1,35 @@
+/* coding: utf-8 */
+*{
+    font-family: "Montserrat";
+}
+
+*:required{
+	background-color:#ffff00;
+}
+
+*:optional{
+  background-color: #7fffff;
+}
+
+.RequiredLabel{
+	color:#ff0000;
+}
+
+.FormTable{
+	border-collapse:collapse;
+	margin:auto
+}
+
+.ButtonOpen{
+	padding-left:16px;
+	padding-right:16px;
+	border-radius:30% / 10%;
+	border-color:#0000cf;
+}
+
+.ButtonSubmit{
+	padding-left:16px;
+	padding-right:16px;
+	border-radius:30% / 10%;
+	border-color:#cf0000;
+}

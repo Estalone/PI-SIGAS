@@ -1,2 +1,3 @@
 config.php
 /restricted/
+.ftp-deploy-sync-state.json

@@ -1,0 +1,11 @@
+{
+	"title":"SIGAS - Login",
+	"subtitle":"Enter your credentials.",
+	"user_name":"Username",
+	"user_name_info":"Enter your registered username",
+	"user_name_ph":"Enter username",
+	"user_pwd":"Password",
+	"user_pwd_info":"Enter your registered password",
+	"user_pwd_ph":"Enter password",
+	"reg_new_usr":"Register new user"
+}
