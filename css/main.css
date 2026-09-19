@@ -1,35 +1,19 @@
 /* coding: utf-8 */
-*{
-    font-family: "Montserrat";
+* {
+  font-family: "Montserrat";
 }
 
-*:required{
-	background-color:#ffff00;
+.loader {
+  margin: auto;
+  width: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-right-color: white;
+  animation: l2 1s infinite linear;
 }
-
-*:optional{
-  background-color: #7fffff;
-}
-
-.RequiredLabel{
-	color:#ff0000;
-}
-
-.FormTable{
-	border-collapse:collapse;
-	margin:auto
-}
-
-.ButtonOpen{
-	padding-left:16px;
-	padding-right:16px;
-	border-radius:30% / 10%;
-	border-color:#0000cf;
-}
-
-.ButtonSubmit{
-	padding-left:16px;
-	padding-right:16px;
-	border-radius:30% / 10%;
-	border-color:#cf0000;
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
 }

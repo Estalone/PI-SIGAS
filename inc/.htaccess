@@ -1,0 +1,2 @@
+# Bloqueia o acesso direto a pasta retornando o erro 403
+Require all denied
