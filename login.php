@@ -10,6 +10,9 @@ include(__DIR__ . '/inc/header.php');
     <h1 class="text-2xl font-bold text-gray-800">Login</h1>
     <p class="text-sm text-gray-500 mt-1">Entre com as suas credenciais</p>
   </div>
+  
+  <div id="statusLogin" class="mensagem"></div>
+  
   <!-- Formulário -->
   <form id="formLogin" class="flex flex-col">
     <!-- E-mail -->

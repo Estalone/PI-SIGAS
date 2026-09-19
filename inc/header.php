@@ -1,5 +1,5 @@
 <?php /* coding: utf-8 */
-include_once "./connection.php";
+require_once __DIR__ . '/../../seguro/sigas/connection.php';
 
 // Application constants
 const MOD_VIEW		= 1;
@@ -32,7 +32,9 @@ const USER_TP_PD	= "pd"; // Programming Developer
 const USER_TP_DM	= "dm"; // Database Manager
 const EMAIL_NOREPLY	= "no-reply@sigas.sigas"; // No reply E-Mail address
 
+
 session_start();
+
 $_self=$_SERVER['PHP_SELF'];
 
 // Check if application is at login or registration Page
@@ -75,16 +77,24 @@ function GRT($length){ /* Generate Random Token */
 	<script src="https://cdn.tailwindcss.com"></script>
 	<style type="text/tailwindcss">
 		@layer components {
-      .input{
-        @apply w-full px-3 py-2 border border-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#293F14] focus:border-transparent transition bg-gray-100 mb-3
+			.input{
+				@apply w-full px-3 py-2 border border-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#293F14] focus:border-transparent transition bg-gray-100 mb-3
+			}
+
+			.btn-primary{
+				@apply w-full bg-[#293F14] hover:bg-[#1f300f] text-white font-medium rounded-lg py-2.5 transition duration-150 shadow-sm mt-2 cursor-pointer
+			}
+
+			label{
+				@apply text-xs font-semibold text-gray-600 uppercase tracking-wider
+			}
+
+      .alert-erro{
+        @apply text-xs font-semibold text-red-600 tracking-wider border border-red-600 rounded p-3 bg-red-50 my-5
       }
 
-      .btn-primary{
-        @apply w-full bg-[#293F14] hover:bg-[#1f300f] text-white font-medium rounded-lg py-2.5 transition duration-150 shadow-sm mt-2 cursor-pointer
-      }
-
-      label{
-        @apply text-xs font-semibold text-gray-600 uppercase tracking-wider
+      .alert-sucesso{
+        @apply text-xs font-semibold text-green-600 tracking-wider border border-green-600 rounded p-3 bg-green-50 my-5
       }
 		}
 	</style>
