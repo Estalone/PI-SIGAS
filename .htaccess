@@ -1,11 +1,18 @@
-# Exibe mensagem de erro
-ErrorDocument 403 "Error 403: Sem permiss&atilde;o para acessar este diret&oacute;rio."
+# Exibe mensagem de erro customizada
+ErrorDocument 403 "Error 403: Sem permissao para acessar este diretorio."
 
-# Bloqueia acesso direto ao arquivo .env
+# Desativa a listagem de arquivos das pastas
+Options -Indexes
+
+# Bloqueia acesso direto ao .env
 <Files .env>
-    Order allow,deny
-    Deny from all
+    Require all denied
 </Files>
 
-# Bloqueia acesso web direto às pastas privadas
-RedirectMatch 403 ^/vendor/(.*)$
+# Bloqueia arquivos de configuracao e logs
+<FilesMatch "\.(json|lock|log|ini|env)$">
+    Require all denied
+</FilesMatch>
+
+# Bloqueia acesso via URL nas pastas
+RedirectMatch 403 ^/vendor(/.*)?$
