@@ -9,6 +9,13 @@ Options -Indexes
     Require all denied
 </Files>
 
+# Bloqueia o arquivo .env com erro 403
+RewriteRule ^\.env$ - [F,L]
+
+# Bloqueia as pastas privadas com erro 403
+RewriteRule ^vendor/ - [F,L]
+RewriteRule ^seguro/ - [F,L]
+
 # Bloqueia arquivos de configuracao e logs
 <FilesMatch "\.(json|lock|log|ini|env)$">
     Require all denied
