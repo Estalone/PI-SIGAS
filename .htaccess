@@ -1,7 +1,11 @@
 # Exibe mensagem de erro
 ErrorDocument 403 "Error 403: Sem permiss&atilde;o para acessar este diret&oacute;rio."
 
-# Bloqueia qualquer tentativa de acessar o arquivo .env via navegador
-<FilesMatch "^\.env">
-  Require all denied
-</FilesMatch>
+# Bloqueia acesso direto ao arquivo .env
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Bloqueia acesso web direto às pastas privadas
+RedirectMatch 403 ^/vendor/(.*)$

@@ -1,5 +1,5 @@
 <?php /* coding: utf-8 */
-require_once __DIR__ . '/../../seguro/sigas/connection.php';
+require_once __DIR__ . '/../restricted/connection.php';
 
 // Application constants
 const MOD_VIEW		= 1;
