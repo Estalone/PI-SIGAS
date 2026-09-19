@@ -3,24 +3,11 @@ RewriteEngine On
 # Exibe mensagem de erro customizada
 ErrorDocument 403 "Error 403: Sem permissao para acessar este diretorio."
 
-# Desativa a listagem de arquivos das pastas
-Options -Indexes
-
-# Bloqueia acesso direto ao .env
-<Files .env>
-    Require all denied
-</Files>
-
-# Bloqueia o arquivo .env com erro 403
+# Bloqueia o arquivo .env
 RewriteRule ^\.env$ - [F,L]
 
-# Bloqueia as pastas privadas com erro 403
-RewriteRule ^vendor/ - [F,L]
+# Bloqueia arquivos de configuracao, chaves e logs
+RewriteRule \.(json|lock|log|ini|env)$ - [F,L]
 
-# Bloqueia arquivos de configuracao e logs
-<FilesMatch "\.(json|lock|log|ini|env)$">
-    Require all denied
-</FilesMatch>
-
-# Bloqueia acesso via URL nas pastas
-RedirectMatch 403 ^/vendor(/.*)?$
+# Bloqueia acesso web direto às pastas privadas
+RewriteRule ^vendor(/.*)?$ - [F,L]
