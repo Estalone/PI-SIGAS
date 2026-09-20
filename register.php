@@ -1,94 +1,22 @@
-<?php /* coding: utf-8 */
+<?php 
 include(__DIR__ . '/inc/header.php');
 
-if ("POST" === $_SERVER["REQUEST_METHOD"]) {
-    //cria as variáveis
-    $user_name   = isset($_POST["user_name"]) ? trim($_POST["user_name"]) : "";
-    $user_pwd    = isset($_POST["user_pwd"]) ? $_POST["user_pwd"] : "";
-    $user_repwd  = isset($_POST["user_repwd"]) ? $_POST["user_repwd"] : "";
-    $user_email  = isset($_POST["user_email"]) ? trim($_POST["user_email"]) : "";
-    $user_type   = isset($_POST["user_type"]) ? trim($_POST["user_type"]) : "";
-    $user_status = 0; //status inicial da confirmação da conta
-    $user_token  = GRT(18); // variável para o token
-
-    // validação simples de campos nulos
-    if (empty($user_name) || empty($user_pwd) || empty($user_email) || empty($user_type)) {
-        $err = "All fields are required.";
-    } elseif ($user_pwd !== $user_repwd) {
-        $err = "Passwords do not match.";
-    } else {
-        // Hash da senha
-        $user_pwd_hash = password_hash($user_pwd, PASSWORD_DEFAULT);
-
-        // Verifica email duplicados
-        $sql = "SELECT user_name, user_email FROM t_users WHERE user_name = ? OR user_email = ?";
-        
-        //caso o supermode estiver ativo adiciona a checagem
-        if ($supermode && "dm" === $user_type) {
-            $sql .= " OR user_type = ?";
-        }
-		
-        // retorna true se a sintaxe estiver correta
-        if ($stmt = $conn->prepare($sql)) {
-            if ($supermode && "dm" === $user_type) {
-                $stmt->bind_param("sss", $user_name, $user_email, $user_type);
-            } else {
-                $stmt->bind_param("ss", $user_name, $user_email);
-            }
-			
-            //executa a consulta e armazena os resultados
-            $stmt->execute();
-            $result = $stmt->get_result();
-			
-            // verificação de duplicados
-            $check = 0;	
-            $check_name = 0;
-            $check_email = 0;
-			
-            while ($row = $result->fetch_assoc()) {
-                $check++;
-                if ($user_name === $row["user_name"]) $check_name++;
-                if ($user_email === $row["user_email"]) $check_email++;
-            }
-            
-            $stmt->close();
-			
-            // existindo um parametro identico retorna erro
-            if ($check > 0) {
-                if ($supermode) {
-                    if ("dm" === $user_type) $err = "Error: there can be only one DM!";
-                    elseif ($check_name > 0) $err = "User name is already taken!";
-                    elseif ($check_email > 0) $err = "E-Mail is already registered!";
-                } else {
-                    $err = "User name or E-Mail is already registered!";
-                }
-            } else {
-                // estando tudo certo adiciona o novo usuário
-                $sql_ins = "INSERT INTO `t_users` (`user_name`,`user_type`,`user_email`,`user_pwd`,`user_status`,`user_token`) VALUES (?,?,?,?,?,?)";
-               	
-                // retorna true se a sintaxe estiver correta
-                if ($stmt_ins = $conn->prepare($sql_ins)) {
-                    $stmt_ins->bind_param("ssssis", $user_name, $user_type, $user_email, $user_pwd_hash, $user_status, $user_token);
-                    $stmt_ins->execute();
-					
-                    //existindo o usuário foi incluído com sucesso
-                    if ($stmt_ins->affected_rows > 0) {
-                        //
-                        // verificar a possibilidade de envio de email
-                        //
-                        $_SESSION["success_msg"] = "Account has been created! Check your E-Mail to activate it.";
-                        header("Location: " . $_SERVER['PHP_SELF']);
-                        exit();
-                    } else {
-                        $err = "Creating your account has failed!";
-                    }
-                    
-                    $stmt_ins->close();
-                }
-            }
-        }
-    }
-}
+// Itens para ser exibido no select
+$selectUserType = [
+    ["value" => "", "label" => "-- Selecione --"],
+    ["value" => "up", "label" => "Usuário (pessoa física)"],
+    ["value" => "uc", "label" => "Empresa privada (pessoa jurídica)"],
+    ["value" => "ug", "label" => "Órgão público (pessoa jurídica)"],
+    ["value" => "if", "label" => "Fiscal Federal"],
+    ["value" => "is", "label" => "Fiscal Estadual"],
+    ["value" => "im", "label" => "Fiscal Municipal"],
+    ["value" => "of", "label" => "Operador Federal"],
+    ["value" => "os", "label" => "Operador Estadual"],
+    ["value" => "om", "label" => "Operador Municipal"],
+    ["value" => "af", "label" => "Administrador Federal"],
+    ["value" => "as", "label" => "Administrador Estadual"],
+    ["value" => "am", "label" => "Administrador Municipal"]
+];
 ?>
 	<div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 my-8">
       <!-- Logo e Cabeçalho -->
@@ -96,155 +24,89 @@ if ("POST" === $_SERVER["REQUEST_METHOD"]) {
         <a href="./">
           <img src="./img/logo/icon-sigas.png" alt="Logo SIGAS" class="w-20 mb-3">
         </a>
-        <h1 data-lx="title" class="text-2xl font-bold text-gray-800 text-center">User Registration</h1>
-        <h2 data-lx="subtitle" class="text-sm text-gray-500 mt-1 text-center">Create new account.</h2>
+        <h1 data-lx="title" class="text-2xl font-bold text-gray-800 text-center">Registrar</h1>
+        <h2 data-lx="subtitle" class="text-sm text-gray-500 mt-1 text-center">Crie uma nova conta.</h2>
       </div>
 
-      <form id="registration" method="POST" onsubmit="return checkPasswords()" class="space-y-4">
+      <!-- Mensagem Registro Status -->
+      <div id="statusRegister" class=""></div>
+
+      <form id="formRegister" class="flex flex-col">
         <!-- User Name -->
-        <div class="flex flex-col space-y-1">
-            <label for="user_name" title="Enter a unique user_name" class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                User name
-            </label>
-            <input 
-              required 
-              type="text" 
-              id="user_name" 
-              name="user_name" 
-              title="Enter a unique user name" 
-              placeholder="unique user name" 
-              value="<?=isset($_POST["user_name"])?safeInput($_POST["user_name"]):""?>" 
-              class="input"
-            />
-        </div>
-
+        <label for="user_name" title="Enter a unique user_name">
+          Seu nome
+        </label>
+        <input 
+          type="text" 
+          name="user_name" 
+          placeholder="Digite seu nome" 
+          class="input"
+        />
         <!-- User Type -->
-        <div class="flex flex-col space-y-1">
-            <label for="user_type" title="Select user type" class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              User type
-            </label>
-            <select 
-              required 
-              id="user_type" 
-              name="user_type" 
-              title="Select user type" 
-              class="input"
-            >
-                <option value="up"<?=IOS(USER_TP_UP,$user_type)?>>Usuário (pessoa física)</option>
-                <option value="uc"<?=IOS(USER_TP_UC,$user_type)?>>Empresa privada (pessoa jurídica)</option>
-                <option value="ug"<?=IOS(USER_TP_UG,$user_type)?>>Órgão público (pessoa jurídica)</option>
-                <option value="if"<?=IOS(USER_TP_IF,$user_type)?>>Fiscal Federal</option>
-                <option value="is"<?=IOS(USER_TP_IS,$user_type)?>>Fiscal Estadual</option>
-                <option value="im"<?=IOS(USER_TP_IM,$user_type)?>>Fiscal Municipal</option>
-                <option value="of"<?=IOS(USER_TP_OF,$user_type)?>>Operador Federal</option>
-                <option value="os"<?=IOS(USER_TP_OS,$user_type)?>>Operador Estadual</option>
-                <option value="om"<?=IOS(USER_TP_OM,$user_type)?>>Operador Municipal</option>
-                <option value="af"<?=IOS(USER_TP_AF,$user_type)?>>Administrador Federal</option>
-                <option value="as"<?=IOS(USER_TP_AS,$user_type)?>>Administrador Estadual</option>
-                <option value="am"<?=IOS(USER_TP_AM,$user_type)?>>Administrador Municipal</option>
-                <?php
-                    if ($supermode){
-                        echo "<option value=\"su\"".IOS(USER_TP_SU,$user_type).">Super User</option>\n";
-                        echo "<option value=\"pd\"".IOS(USER_TP_PD,$user_type).">Programming Developer</option>\n";
-                        echo "<option value=\"dm\"".IOS(USER_TP_DM,$user_type).">Database Manager</option>\n";
-                    }
-                ?>
-            </select>
-        </div>
-
-        <!-- E-Mail -->
-        <div class="flex flex-col space-y-1">
-            <label for="user_email" title="Enter E-Mail" class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              E-Mail
-            </label>
-            <input 
-              type="email" 
-              id="user_email" 
-              name="user_email" 
-              value="<?=isset($_POST["user_email"])?safeInput($_POST["user_email"]):""?>" 
-              title="Enter E-Mail address" 
-              placeholder="E-Mail address" 
-              class="input"
-            />
-        </div>
-
-        <!-- Password -->
-        <div class="flex flex-col space-y-1">
-            <label for="user_pwd" title="Enter password" class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Password
-            </label>
-            <input 
-              required 
-              type="password" 
-              id="user_pwd" 
-              name="user_pwd" 
-              title="Enter password" 
-              placeholder="********" 
-              class="input"
-            />
-        </div>
-
-        <!-- Password Again -->
-        <div class="flex flex-col space-y-1">
-            <label for="user_repwd" title="Enter password again" class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Password again
-            </label>
-            <input 
-              required 
-              type="password" 
-              id="user_repwd" 
-              name="user_repwd" 
-              title="Enter password again" 
-              placeholder="********" 
-              class="input"
-            />
-        </div>
-
-        <!-- Mensagem de Erro do PHP -->
-        <?php if (isset($err) && !empty($err)): ?>
-          <div class="p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg text-center font-medium">
-            <?= $err ?>
-          </div>
-        <?php endif; ?>
-
-        <!-- Botão de Envio -->
-        <button 
-          type="submit" 
-          title="Click to register new user" 
-          class="btn-primary"
+        <label for="user_type">
+          Tipo usuário
+        </label>
+        <select 
+          name="user_type" 
+          class="input"
         >
-          Create Account
+        <?php foreach ($selectUserType as $option): ?>
+          <option value="<?= $option['value'] ?>">
+            <?= htmlspecialchars($option['label']) ?>
+          </option>
+        <?php endforeach; ?>
+        </select>
+        <!-- E-Mail -->
+        <label for="user_email">
+          E-Mail
+        </label>
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Endereço de E-mail" 
+          class="input"
+        />
+        <!-- Password -->
+        <label for="user_pwd">
+          Senha
+        </label>
+        <input  
+          type="password" 
+          name="user_pwd" 
+          placeholder="********" 
+          class="input"
+        />
+        <!-- Password Again -->
+        <label for="user_repwd" >
+          Confirme senha
+        </label>
+        <input 
+          type="password" 
+          name="user_repwd" 
+          title="Enter password again" 
+          placeholder="********" 
+          class="input"
+        />
+        <!-- Botão de Envio -->
+        <button
+          type="submit" 
+          class="btn-primary"
+          id="submitRegister"
+        >
+          Criar conta
         </button>
       </form>
 
-      <!-- Mensagem de Sucesso / Link de Navegação -->
-      <div class="mt-6 text-center">
-          <?php if (isset($_SESSION["success_msg"]) && !empty($_SESSION["success_msg"])): ?>
-              <div class="p-3 bg-green-50 border border-green-200 text-green-700 text-xs rounded-lg font-medium mb-3">
-                  <?= $_SESSION["success_msg"] ?>
-              </div>
-              <?php unset($_SESSION["success_msg"]); ?>
-          <?php endif; ?>
-          
-          <p class="text-sm font-medium">
-              Already have an account? <a href="./login.php" class="text-blue-600 hover:text-blue-800 hover:underline transition">Login here</a>
-          </p>
+      <!-- Link para login -->
+      <div class="mt-6 text-center text-sm">
+        <p class="text-sm font-medium">
+          Tem uma conta? Faça o login
+          <a href="./login.php" class="font-medium text-blue-600 hover:text-blue-800 hover:underline transition">
+            aqui.
+          </a>
+        </p>
       </div>
     </div>
-	<?php
-		$conn->close();
-	?>
-<script>
-	function checkPasswords(){
-        // verifica se as senhas estão iguais
-        const pwd = document.getElementById("user_pwd").value;
-        const repwd = document.getElementById("user_repwd").value;
-        
-		if (pwd !== repwd){
-			event.preventDefault();
-            alert("Passwords do not match");
-		}
-	}
-</script>
+    <script src="./js/register.js"></script>
 </body>
 </html>

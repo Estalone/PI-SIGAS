@@ -11,8 +11,9 @@ include(__DIR__ . '/inc/header.php');
     <p class="text-sm text-gray-500 mt-1">Entre com as suas credenciais</p>
   </div>
   
-  <div id="statusLogin" class="mensagem"></div>
-  
+  <!-- Mensagem Login Status -->
+  <div id="statusLogin" class=""></div>
+
   <!-- Formulário -->
   <form id="formLogin" class="flex flex-col">
     <!-- E-mail -->
@@ -20,11 +21,10 @@ include(__DIR__ . '/inc/header.php');
         E-mail
       </label>
       <input 
-        required
         id="email"
         type="email"
         name="email" 
-        placeholder="Digite seu E-mail" 
+        placeholder="seu@email.com" 
         class="input"
       >
     <!-- Senha -->
@@ -32,11 +32,10 @@ include(__DIR__ . '/inc/header.php');
         Senha
       </label>
       <input 
-        required 
         type="password" 
         id="user_pwd" 
         name="user_pwd" 
-        placeholder="Digite sua senha" 
+        placeholder="*********" 
         class="input"
       >
 
@@ -55,9 +54,12 @@ include(__DIR__ . '/inc/header.php');
 
   <!-- Link para Registro -->
   <div class="mt-6 text-center">
-    <a href="./register.php" class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline transition">
-      Register new user
+    <p class="text-sm font-medium">
+    Não possui uma conta? Registre-se
+    <a href="./register.php" class="font-medium text-blue-600 hover:text-blue-800 hover:underline transition">
+      aqui.
     </a>
+    </p>
   </div>
 </div>
 <script src="./js/login.js"></script>
