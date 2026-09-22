@@ -85,7 +85,8 @@ formLogin.addEventListener("submit", async (e) => {
         throw new Error(`Erro na requisição: Code ${response.status}: `);
       }
     }
-
+    // Redireciona o usuário para a home
+    window.location.href = "./home.php";
     exibirMensagem(`Login realizado com sucesso!`, "sucesso");
   } catch (err) {
     // Captura tanto os erros lançados no 'throw' quanto falhas de rede

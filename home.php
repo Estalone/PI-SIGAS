@@ -1,39 +1,38 @@
 <?php /* coding: utf-8 */
 include "./inc/header.php";
+
+// Validação da sessão
+require_once __DIR__ . '/inc/validAuth.php';
+
+// Executa a verificação no início da requisição
+validarSessao();
+
+// Função para exibir as iniciais do nome
+function iniciaisName($name){
+	echo $name;
+}
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=0.9">
-	<link rel="stylesheet" href="./css/main.css">
-	<title>Yaguara - Login</title>
-</head>
-<body>
+  <nav class="w-full bg-white p-5 drop-shadow">
+    <div class="container-lg mx-auto w-[1280px] max-md:w-full shadown">
+      <span class="material-symbols-outlined text-stone-500">menu</span>
+    </div>
+  </nav>
 	<h1>Yaguara</h1>
 	<h2>Login</h2>
-	<h3>Welcome, <?php echo $_SESSION['user_name']; ?>!</h3>
+	<h3>Welcome, <?php iniciaisName($_SESSION['name']); ?>!</h3>
 	<hr>
 	<h4>Your Account Details:</h4>
 	<dl>
 	<dt>Id</dt>
-	<dd><?= $_SESSION['user_id'] ?></dd>
+	<dd><?php echo $_SESSION['id']; ?></dd>
 	<dt>User Name</dt>
-	<dd><?= $_SESSION['user_name'] ?></dd>
-	<dt>User Type</dt>
-	<dd><?= $_SESSION['user_type'] ?></dd>
-	<dt>E-Mail</dt>
-	<dd><?= $_SESSION['user_email'] ?></dd>
-	<dt>User Status</dt>
-	<dd><?= $_SESSION['user_status'] ?></dd>
+	<dd><?php echo $_SESSION['name']; ?></dd>
 	</dl>
-
-	<?php
-	$conn->close();
-	?>
 
 	<form action="./logout.php">
 		<input class="Submit" type="submit" title="Log out" value="Log out"/>
 	</form>
 	<script type="text/javascript" src="./localisation.js"></script>
-</body></html>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <?php /* coding: utf-8 */
 require_once './inc/connection.php';
+
 session_start();
 ?>
 <!DOCTYPE html>
@@ -9,6 +10,8 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=0.9">
 	<link rel="stylesheet" href="./css/main.css">
 	<title data-lx="title">SIGAS</title>
+  <!-- Material icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=menu" />
   <!-- Fonte da página -->
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <!-- Cria uma folha de estilo utilizando o framework tailwindCSS -->
@@ -27,14 +30,15 @@ session_start();
 				@apply text-xs font-semibold text-gray-600 uppercase tracking-wider
 			}
 
-      .alert-erro{
-        @apply text-xs font-semibold text-red-600 tracking-wider border border-red-600 rounded p-3 bg-red-50 my-5
-      }
+			.alert-erro{
+				@apply text-xs font-semibold text-red-600 tracking-wider border border-red-600 rounded p-3 bg-red-50 my-5
+			}
 
-      .alert-sucesso{
-        @apply text-xs font-semibold text-green-600 tracking-wider border border-green-600 rounded p-3 bg-green-50 my-5
-      }
+			.alert-sucesso{
+				@apply text-xs font-semibold text-green-600 tracking-wider border border-green-600 rounded p-3 bg-green-50 my-5
+			}
+      
 		}
 	</style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-100">

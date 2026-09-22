@@ -23,6 +23,7 @@ if ($supermode)
 		["value" => "pd", "label" => "Desenvolvedor"],
 		["value" => "dm", "label" => "Gerente da base de dados"]);
 ?>
+<div class="min-h-screen flex items-center justify-center p-4">
 	<div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 my-8">
       <!-- Logo e Cabeçalho -->
       <div class="flex flex-col items-center mb-6">
@@ -112,6 +113,7 @@ if ($supermode)
         </p>
       </div>
     </div>
+  </div>
 	<script src="./js/register.js"></script>
 	<script src="./js/localisation.js"></script>
 </body>

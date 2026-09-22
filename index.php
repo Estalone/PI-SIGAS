@@ -1,6 +1,7 @@
 <?php /* coding: utf-8 */
 include "./inc/header.php";
 ?>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 <div class="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
   <!-- Logo e Cabeçalho -->
   <div class="flex flex-col items-center mb-6">

@@ -3,7 +3,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 // Conexão com o banco
-require_once './inc/connection.php';
+require_once __DIR__.'/../inc/connection.php';
 
 // Bloqueia chamadas via GET
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -62,7 +62,7 @@ session_start();
 try {
   $sql = "SELECT * FROM `users` WHERE `email` = :email";
   $stmt = $pdo->prepare($sql);
-  $stmt->execute(['email' =>$email]);
+  $stmt->execute(['email' => $email]);
 
   $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
