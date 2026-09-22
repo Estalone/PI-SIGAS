@@ -7,7 +7,7 @@ ErrorDocument 403 "Error 403: Sem permissao para acessar este diretorio."
 RewriteRule ^\.env$ - [F,L]
 
 # Bloqueia arquivos de configuracao, chaves e logs
-RewriteRule \.(json|lock|log|ini|env)$ - [F,L]
+RewriteRule \.(lock|log|ini|env)$ - [F,L]
 
 # Bloqueia acesso web direto às pastas privadas
 RewriteRule ^vendor(/.*)?$ - [F,L]

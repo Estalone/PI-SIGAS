@@ -1,5 +1,5 @@
 <?php /* coding: utf-8 */
-include(__DIR__ . '/inc/header.php');
+include "./inc/header.php";
 ?>
 <div class="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
   <!-- Logo e Cabeçalho -->
@@ -16,26 +16,28 @@ include(__DIR__ . '/inc/header.php');
 
     <div class="space-y-3">
       <!-- Botão Manager -->
-      <a 
-        type="button" 
-        id="btManager" 
-        data-lt="manager_info" 
-        data-lx="manager" 
-        title="Launch Manager" 
+      <a
+        type="button"
+        id="btManager"
+        data-lt="manager_info"
+        data-lx="manager"
+        title="Launch Manager"
         href="./login.php"
+		target="_blank"
         class="w-full bg-[#293F14] hover:bg-[#1f300f] text-white font-medium rounded-lg py-2.5 transition duration-150 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
       >
         Manager
       </a>
 
       <!-- Botão E-Mail -->
-      <a 
-        type="button" 
-        id="btEMail" 
-        data-lt="email_info" 
-        data-lx="email" 
-        title="Launch E-Mail" 
+      <a
+        type="button"
+        id="btEMail"
+        data-lt="email_info"
+        data-lx="email"
+        title="Launch E-Mail"
         href="./email.php"
+		target="_blank"
         class="w-full bg-white hover:bg-gray-50 text-[#293F14] border border-[#293F14] font-medium rounded-lg py-2.5 transition duration-150 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
       >
         E-Mail
@@ -44,6 +46,6 @@ include(__DIR__ . '/inc/header.php');
   </div>
 </div>
 
-<script type="text/javascript" src="./localisation.js"></script>
+<script type="text/javascript" src="./js/localisation.js"></script>
 </body>
 </html>

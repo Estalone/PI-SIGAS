@@ -1,5 +1,5 @@
 <?php /* coding: utf-8 */
-include "./header.php";
+include "./inc/header.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">

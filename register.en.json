@@ -1,4 +1,6 @@
 {
 	"title":"SIGAS - User Registration",
 	"subtitle":"Create new account."
+    "unique_uname":"Enter a unique user name.",
+    "uname":"User name"
 }

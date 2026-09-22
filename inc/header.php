@@ -1,8 +1,6 @@
 <?php /* coding: utf-8 */
-require_once __DIR__ . '/../restricted/connection.php';
-
+require_once './inc/connection.php';
 session_start();
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

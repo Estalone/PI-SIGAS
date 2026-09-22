@@ -3,7 +3,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 // Conexão com o banco
-require_once __DIR__ . '/../restricted/connection.php';
+require_once __DIR__.'/../inc/connection.php';
 
 // Bloqueia chamadas via GET
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -13,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Lista de tipos de usuários permitidos
-$validUserTypes = ['up', 'uc', 'ug', 'if', 'is', 'im', 'of', 'os', 'om', 'af', 'as', 'am'];
+$validUserTypes=['up', 'uc', 'ug', 'if', 'is', 'im', 'of', 'os', 'om', 'af', 'as', 'am'];
+if ($supermode)
+	array_push($validUserTypes,"su","pd","dm");
 
 // Recebe e limpa o input do usuário
 $user_name = isset($_POST['user_name']) ? trim($_POST['user_name']) : '';
@@ -72,21 +74,24 @@ $senhaHash = password_hash($user_pwd, PASSWORD_DEFAULT);
 
 // Prepara e executa a inserção com PDO
 try {
-  // Verifica se o e-mail já está cadastrado no banco
-  $checkSql = "SELECT id FROM users WHERE email = :email";
-  $checkStmt = $pdo->prepare($checkSql);
-  $checkStmt->execute([':email' => $email]);
+	// Verifica se o usuário ou E-Mail já estão cadastrados na base
+	$checkSQL = "SELECT id FROM users WHERE name = :user_name OR email = :email";
+	$checkStmt = $pdo->prepare($checkSQL);
+	$checkStmt->execute([
+        ":user_name" => $user_name,
+		':email' => $email
+	]);
 
   if ($checkStmt->fetch()) {
     http_response_code(400);
     echo json_encode([
         'success'  => false,
-        'mensagem' => 'O e-mail informado já está cadastrado no sistema.'
+        'mensagem' => 'O usuário e/ou o E-Mail informado já está cadastrado no sistema.'
     ]);
     exit();
   }
 
-  // Não existindo um e-mail, cria o usuário
+  // Não existindo o usuário, nem o E-Mail, cria o usuário
   $sql = "INSERT INTO users (name, password, email, type) VALUES (:name, :password, :email, :type)";
   $stmt = $pdo->prepare($sql);
   $result = $stmt->execute([
@@ -96,17 +101,16 @@ try {
     ':type'     => $user_type,
   ]);
 
-  // TO DO Adicionar abaico lógica de envio de e-mail para confirmação da conta
+  // TO DO Adicionar abaixo lógica de envio de e-mail para confirmação da conta
   if ($result) {
     http_response_code(201);
     echo json_encode([
         'success'  => true,
         'mensagem' => 'Usuário cadastrado com sucesso!',
     ]);
+	sendEMail($pdo,"no-reply@sigas",$email,"SIGAS - Registration confirmation","token");
     exit();
   }
-
-
 } catch (PDOException $e) {
   http_response_code(500);
   echo json_encode(['success' => false, 'error' => 'Erro interno no servidor.']);

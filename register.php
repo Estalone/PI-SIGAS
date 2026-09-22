@@ -1,8 +1,8 @@
 <?php 
-include(__DIR__ . '/inc/header.php');
+include './inc/header.php';
 
 // Itens para ser exibido no select
-$selectUserType = [
+$selectUserType=[
     ["value" => "", "label" => "-- Selecione --"],
     ["value" => "up", "label" => "Usuário (pessoa física)"],
     ["value" => "uc", "label" => "Empresa privada (pessoa jurídica)"],
@@ -17,6 +17,11 @@ $selectUserType = [
     ["value" => "as", "label" => "Administrador Estadual"],
     ["value" => "am", "label" => "Administrador Municipal"]
 ];
+if ($supermode)
+	array_push($selectUserType,
+		["value" => "su", "label" => "Superusuário"],
+		["value" => "pd", "label" => "Desenvolvedor"],
+		["value" => "dm", "label" => "Gerente da base de dados"]);
 ?>
 	<div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 my-8">
       <!-- Logo e Cabeçalho -->
@@ -33,8 +38,8 @@ $selectUserType = [
 
       <form id="formRegister" class="flex flex-col">
         <!-- User Name -->
-        <label for="user_name" title="Enter a unique user_name">
-          Seu nome
+        <label for="user_name" data-lt="unique_unanme" data-lx="uname" title="Enter a unique user_name">
+          Nome do usuário
         </label>
         <input 
           type="text" 
@@ -44,7 +49,7 @@ $selectUserType = [
         />
         <!-- User Type -->
         <label for="user_type">
-          Tipo usuário
+          Tipo de usuário
         </label>
         <select 
           name="user_type" 
@@ -107,6 +112,7 @@ $selectUserType = [
         </p>
       </div>
     </div>
-    <script src="./js/register.js"></script>
+	<script src="./js/register.js"></script>
+	<script src="./js/localisation.js"></script>
 </body>
 </html>

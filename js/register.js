@@ -97,7 +97,7 @@ formRegister.addEventListener("submit", async (e) => {
           "Erro interno no servidor (500). Tente novamente mais tarde.",
         );
       } else if (response.status === 400) {
-        throw new Error("O e-mail informado já está cadastrado no sistema.");
+        throw new Error("O usuário e/ou o E-Mail informado já está cadastrado no sistema.");
       } else {
         throw new Error(`Erro na requisição: Code ${response.status}: `);
       }

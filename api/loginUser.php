@@ -3,7 +3,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 // Conexão com o banco
-require_once __DIR__ . '/../restricted/connection.php';
+require_once './inc/connection.php';
 
 // Bloqueia chamadas via GET
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

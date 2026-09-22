@@ -1,5 +1,5 @@
 <?php /* coding: utf-8 */
-include(__DIR__ . '/inc/header.php');
+include './inc/header.php';
 ?>
 <div class="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
   <!-- Logo e Cabeçalho -->
