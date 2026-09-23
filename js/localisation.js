@@ -108,6 +108,11 @@ function  translatePage(){
 		const key=element.getAttribute("data-lt");
 		element.title=translations[key]||element.title;
 	});
+	// Find and translate placeholder attributes.
+	document.querySelectorAll("[data-lp]").forEach(element=>{
+		const key=element.getAttribute("data-lp");
+		element.placeholder=translations[key]||element.placeholder;
+	});
 	// Find and translate value attributes.
 	document.querySelectorAll("[data-lv]").forEach(element=>{
 		const key=element.getAttribute("data-lv");
