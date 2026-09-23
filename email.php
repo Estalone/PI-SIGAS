@@ -23,20 +23,23 @@ include "./inc/connection.php";
     <table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;margin:auto">
 	<tr><th>#</th><th>id</th><th>Timestamp</th><th>Sender</th><th>Destination</th><th>Subject</th><th>Message</th><th>Status</th></tr>
 <?php
-	$sql="SELECT * FROM `emails` ORDER BY `DATETIME` DESC";
+	$sql="SELECT * FROM emails ORDER BY sent_at DESC";
 	$stmt=$pdo->prepare($sql);
 	$stmt->execute();
-    $em_cnt=0;
-while ($row = $stmt->fetch())
-{
-    echo $row['sender'] . "\n";
-}
-/*
-foreach ($stmt as $row) {
-		$em_cnt++;
-		echo "<tr><td>".$em_cnt."</td></tr>";
+	$em_cnt=0;
 
-		echo "<tr><td>".$em_cnt."</td><td>".$row["id"]."</td><td>".$row["sent_at"]."</td><td style=\"max-width:50px;\" title=\"".$row["sender"]."\">".$row["sender"]."</td><td style=\"max-width:50px;\" title=\"".$row["recipient"]."\">".$row["recipient"]."</td><td style=\"max-width:50px;\" title=\"".$row["subject"]."\">".$row["subject"]."</td><td style=\"width:100px;\">".$row["message"]."</td><td>".$row["status"]."</td></tr>";/**/
+	$msg_rerp= array();
+	$msg_rerp[0] ="/<[^>]>/";
+	$msg_rerp[1] ="/&[^;];/";
+	$msg_rerp[2] ="/[\"\'\`]/";
+	$msg_rerr=array();
+	$replacements[0] ="";
+	$replacements[1] =".";
+	$replacements[2] ="_";
+
+	while($row=$stmt->fetch()){
+		$em_cnt++;
+		echo "<tr onclick=\"document.getElementById('read_msg_".$em_cnt."').showModal()\"><td>".$em_cnt."</td><td style=\"max-width:50px;\">".$row["id"]."</td><td>".$row["sent_at"]."</td><td style=\"max-width:50px;\" title=\"".$row["sender"]."\">".$row["sender"]."</td><td style=\"max-width:50px;\" title=\"".$row["recipient"]."\">".$row["recipient"]."</td><td style=\"max-width:50px;\" title=\"".$row["subject"]."\">".$row["subject"]."</td><td style=\"max-width:100px;\">".substr(preg_replace($msg_rerp,$msg_rerr,$row["message"]),0,20)."<dialog id=\"read_msg_".$em_cnt."\"><p>".$row["message"]."</p><button commandfor=\"read_msg_".$em_cnt."\" command=\"close\">Close</button></dialog></td><td>".$row["status"]."</td></tr>";
 	}
 	echo "</table>";
 
