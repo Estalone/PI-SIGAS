@@ -18,11 +18,11 @@ if ($supermode)
 	array_push($validUserTypes,"su","pd","dm");
 
 // Recebe e limpa o input do usuário
-username=isset(user_name = isset(username=isset(_POST["user_name"]) ? trim($_POST["user_name"]) : "";
-usertype=isset(user_type= isset(usertype=isset(_POST["user_type"]) ? trim($_POST["user_type"]) : "";
-email=isset(email= isset(email=isset(_POST["email"]) ? trim($_POST["email"]) : "";
-userpwd=isset(user_pwd= isset(userpwd=isset(_POST["user_pwd"]) ? trim($_POST["user_pwd"]) : "";
-userrepwd=isset(user_repwd= isset(userrepwd=isset(_POST["user_repwd"]) ? trim($_POST["user_repwd"]) : "";
+$user_name = isset($_POST["user_name"]) ? trim($_POST["user_name"]) : "";
+$user_type= isset($_POST["user_type"]) ? trim($_POST["user_type"]) : "";
+$email= isset($_POST["email"]) ? trim($_POST["email"]) : "";
+$user_pwd= isset($_POST["user_pwd"]) ? trim($_POST["user_pwd"]) : "";
+$user_repwd= isset($_POST["user_repwd"]) ? trim($_POST["user_repwd"]) : "";
 
 $errors = [];
 
@@ -31,7 +31,7 @@ if (empty($user_name)) {
     $errors["user_name"] = "O nome é obrigatório.";
 }
 
-username=htmlspecialchars(user_name = htmlspecialchars(username=htmlspecialchars(user_name, ENT_QUOTES, "UTF-8");
+$user_name = htmlspecialchars($user_name, ENT_QUOTES, "UTF-8");
 
 if (empty($user_type)) {
     $errors["user_type"] = "Selecione o tipo de usuário.";
