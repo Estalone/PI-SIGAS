@@ -18,24 +18,24 @@ if ($supermode)
 	array_push($validUserTypes,"su","pd","dm");
 
 // Recebe e limpa o input do usuário
-$user_name = isset($_POST["user_name"]) ? trim($_POST["user_name"]) : "";
-$user_type= isset($_POST["user_type"]) ? trim($_POST["user_type"]) : "";
-$email= isset($_POST["email"]) ? trim($_POST["email"]) : "";
-$user_pwd= isset($_POST["user_pwd"]) ? trim($_POST["user_pwd"]) : "";
-$user_repwd= isset($_POST["user_repwd"]) ? trim($_POST["user_repwd"]) : "";
+$user_name=isset($_POST["user_name"]) ? trim($_POST["user_name"]):"";
+$user_type=isset($_POST["user_type"]) ? trim($_POST["user_type"]):"";
+$email=isset($_POST["email"]) ? trim($_POST["email"]):"";
+$user_pwd=isset($_POST["user_pwd"]) ? trim($_POST["user_pwd"]):"";
+$user_repwd=isset($_POST["user_repwd"]) ? trim($_POST["user_repwd"]):"";
 
-$errors = [];
+$errors=[];
 
 // Validação dos campos
-if (empty($user_name)) {
-    $errors["user_name"] = "O nome é obrigatório.";
+if (empty($user_name)){
+    $errors["user_name"]="O nome é obrigatório.";
 }
 
 $user_name = htmlspecialchars($user_name, ENT_QUOTES, "UTF-8");
 
-if (empty($user_type)) {
+if (empty($user_type)){
     $errors["user_type"] = "Selecione o tipo de usuário.";
-} elseif (!in_array($user_type, $validUserTypes, true)) {
+}elseif(!in_array($user_type, $validUserTypes, true)){
     $errors["user_type"] = "Tipo de usuário inválido.";
 }
 
@@ -64,7 +64,7 @@ if(!empty($errors)){
   http_response_code(400);
     echo json_encode([
         "success" => false,
-        "mensagem" => "Verifique os dados informados: " . $mensagemErro,
+        "mensagem" => "Verifique os dados informados: " . $mensagemErro
     ]);
     exit;
 }
@@ -88,16 +88,16 @@ $token=genToken(16);
 $status=0;
 
 // Prepara e executa a inserção com PDO
-try {
+try{
 	// Verifica se o usuário ou E-Mail já estão cadastrados na base
-	$checkSQL = "SELECT id FROM users WHERE name = :user_name OR email = :email";
-	$checkStmt = $pdo->prepare($checkSQL);
+	$checkSQL="SELECT id FROM users WHERE name = :user_name OR email = :email";
+	$checkStmt=$pdo->prepare($checkSQL);
 	$checkStmt->execute([
-		":user_name" => $user_name,
-		":email" => $email
+		":user_name"	=> $user_name,
+		":email"		=> $email
 	]);
 
-  if ($checkStmt->fetch()) {
+  if($checkStmt->fetch()){
     http_response_code(400);
     echo json_encode([
         "success"  => false,
@@ -107,10 +107,10 @@ try {
   }
 
   // Não existindo o usuário, nem o E-Mail, cria o usuário
-  $sql = "INSERT INTO users (name, password, email, type,status,token) VALUES (:name,:password,:email,:type,:status,:token)";
-  $stmt = $pdo->prepare($sql);
-  $result = $stmt->execute([
-    ":name"	=> $user_name,
+  $sql="INSERT INTO users (name,password,email,type,status,token) VALUES (:name,:password,:email,:type,:status,:token)";
+  $stmt=$pdo->prepare($sql);
+  $result=$stmt->execute([
+    ":name"		=> $user_name,
     ":password"	=> $senhaHash,
     ":email"	=> $email,
     ":type"		=> $user_type,
@@ -118,16 +118,16 @@ try {
     ":token"	=> $token
   ]);
 
-if ($result) {
+if($result){
     http_response_code(201);
     echo json_encode([
         "success"	=> true,
-        "mensagem"	=> "Usuário cadastrado com sucesso!",
+        "mensagem"	=> "Usuário cadastrado com sucesso!"
     ]);
 	sendEMail($pdo,"no-reply@sigas",$email,"SIGAS - Registration confirmation",$token);
     exit();
   }
-} catch (PDOException $e) {
+}catch(PDOException $e){
   http_response_code(500);
   echo json_encode(["success" => false, "error" => "Erro interno no servidor."]);
   exit();
