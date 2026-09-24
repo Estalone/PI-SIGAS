@@ -1,5 +1,5 @@
 const btnRegister = document.querySelector("#submitRegister"); // pega o botão de registro
-const btnRegisterText = document.querySelector("#submitRegister").textContent; // pega o texto do botão de registro
+const btnRegisterText = btnRegister.textContent; // pega o texto do botão de registro
 const statusDiv = document.querySelector("#statusRegister"); // pega a div de status
 
 // exibe o estado de carregamento
@@ -85,7 +85,7 @@ formRegister.addEventListener("submit", async (e) => {
   try {
     const response = await fetch("./api/registerUser.php", {
       method: "POST",
-      body: formData,
+      body: formData
     });
 
     // Verifica se a resposta HTTP é diferente da faixa 200-299
@@ -106,7 +106,7 @@ formRegister.addEventListener("submit", async (e) => {
     const data = await response.json();
     exibirMensagem(
       `Registro realizado com sucesso! Título: ${data.title}`,
-      "sucesso",
+      "sucesso"
     );
   } catch (err) {
     // Captura tanto os erros lançados no 'throw' quanto falhas de rede
