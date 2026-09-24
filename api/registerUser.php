@@ -106,30 +106,32 @@ try{
     exit();
   }
 
-  // Não existindo o usuário, nem o E-Mail, cria o usuário
-  $sql="INSERT INTO users (name,password,email,type,status,token) VALUES (:name,:password,:email,:type,:status,:token)";
-  $stmt=$pdo->prepare($sql);
-  $result=$stmt->execute([
-    ":name"		=> $user_name,
-    ":password"	=> $senhaHash,
-    ":email"	=> $email,
-    ":type"		=> $user_type,
-    ":status"	=> $status,
-    ":token"	=> $token
-  ]);
+	// Não existindo o usuário, nem o E-Mail, cria o usuário
+	$sql="INSERT INTO users (name,password,email,type,status,token) VALUES (:name,:password,:email,:type,:status,:token)";
+	$stmt=$pdo->prepare($sql);
+	$result=$stmt->execute([
+		":name"		=> $user_name,
+		":password"	=> $senhaHash,
+		":email"	=> $email,
+		":type"		=> $user_type,
+		":status"	=> $status,
+		":token"	=> $token
+	]);
+	$sender="no-reply@sigas.ibama.gov.br";
+	$confirm_msg="Use este token para ativar a conta: ".$token."</br>\n</br>\nOu <a href=\"https://pi2g1.freedev.app/confirm.php?token=".$token."&email=".$email."\" target=\"_blank\">clique aqui para ativar</a>!";
 
-if($result){
-    http_response_code(201);
-    echo json_encode([
-        "success"	=> true,
-        "mensagem"	=> "Usuário cadastrado com sucesso!"
-    ]);
-	sendEMail($pdo,"no-reply@sigas",$email,"SIGAS - Registration confirmation",$token);
-    exit();
-  }
+	if($result){
+		http_response_code(201);
+		echo json_encode([
+			"success"	=> true,
+			"mensagem"	=> "Usuário cadastrado com sucesso!"
+		]);
+		sendEMail($pdo,$sender,$email,"SIGAS - Registration confirmation",$confirm_msg);
+		exit();
+	}
 }catch(PDOException $e){
-  http_response_code(500);
-  echo json_encode(["success" => false, "error" => "Erro interno no servidor."]);
-  exit();
+	http_response_code(500);
+	echo json_encode(["success" => false, "error" => "Erro interno no servidor."]);
+	exit();
 }
 ?>
