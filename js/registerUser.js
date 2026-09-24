@@ -12,7 +12,7 @@ function removeLoader(){
 }
 
 // Função de exibir a mensagem do login
-function exibirMensagem(texto, tipo){
+function exibirMensagem(texto,tipo){
 	statusDiv.innerHTML=texto;
 	statusDiv.className=`alert-${tipo}`;
 }
@@ -63,7 +63,7 @@ formRegister.addEventListener("submit",async(e)=>{
 		errors.user_repwd="As senhas não coincidem.";
 	}
 
-	if(Object.keys(errors).length > 0){
+	if(Object.keys(errors).length>0){
 		exibirMensagem(
 			`
 				Verifique os dados informados:
@@ -109,9 +109,9 @@ formRegister.addEventListener("submit",async(e)=>{
 	}catch(err){
 		// Captura tanto os erros lançados no 'throw' quanto falhas de rede
 		if(err.name==="TypeError"){
-			exibirMensagem("Falha de conexão. Verifique sua internet.", "erro");
+			exibirMensagem("Falha de conexão. Verifique sua internet.","erro");
 		}else{
-			exibirMensagem(err.message, "erro");
+			exibirMensagem(err.message,"erro");
 		}
 	}finally{
 		removeLoader();
