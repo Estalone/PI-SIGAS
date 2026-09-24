@@ -39,7 +39,7 @@ include "./inc/connection.php";
 
 	while($row=$stmt->fetch()){
 		$em_cnt++;
-		echo "<tr onclick=\"document.getElementById('read_msg_".$em_cnt."').showModal()\"><td>".$em_cnt."</td><td style=\"max-width:50px;\">".$row["id"]."</td><td>".$row["sent_at"]."</td><td style=\"max-width:50px;\" title=\"".$row["sender"]."\">".$row["sender"]."</td><td style=\"max-width:50px;\" title=\"".$row["recipient"]."\">".$row["recipient"]."</td><td style=\"max-width:50px;\" title=\"".$row["subject"]."\">".$row["subject"]."</td><td style=\"max-width:100px;\">".substr(preg_replace($msg_rerp,$msg_rerr,$row["message"]),0,20)."<dialog id=\"read_msg_".$em_cnt."\"><p>".$row["message"]."</p><button commandfor=\"read_msg_".$em_cnt."\" command=\"close\">Close</button></dialog></td><td>".$row["status"]."</td></tr>";
+		echo "<tr onclick=\"document.getElementById('read_msg_".$em_cnt."').showModal()\"><td>".$em_cnt."</td><td style=\"max-width:50px;\">".$row["id"]."</td><td>".$row["sent_at"]."</td><td style=\"max-width:50px;\" title=\"".$row["sender"]."\">".$row["sender"]."</td><td style=\"max-width:50px;\" title=\"".$row["recipient"]."\">".$row["recipient"]."</td><td style=\"max-width:50px;\" title=\"".$row["subject"]."\">".$row["subject"]."</td><td style=\"max-width:100px;\">".substr(preg_replace($msg_rerp,$msg_rerr,$row["message"]),0,20)."<dialog id=\"read_msg_".$em_cnt."\"><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\"><tr><td>Origem:</td><td>".$row["sender"]."</td></tr><tr><td>Recipiente:</td><td>".$row["recipient"]."</td></tr><tr><td colspan=\"2\">".$row["message"]."</td></tr></table><button commandfor=\"read_msg_".$em_cnt."\" command=\"close\">Close</button></dialog></td><td>".$row["status"]."</td></tr>";
 	}
 	echo "</table>";
 
