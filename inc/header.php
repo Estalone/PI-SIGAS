@@ -8,7 +8,7 @@ session_start();
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=0.9">
-	<link rel="stylesheet" href="./css/main.css">
+	<link rel="stylesheet" href="<?= __DIR__ ?>/../css/main.css">
 	<title data-lx="title">SIGAS</title>
   <!-- Material icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=menu" />
