@@ -12,7 +12,7 @@ function removeLoader(){
 }
 
 // Função de exibir a mensagem do login
-function exibirMensagem(texto, tipo){
+function exibirMensagem(texto,tipo){
 	statusDiv.innerHTML=texto;
 	statusDiv.className=`alert-${tipo}`;
 }
