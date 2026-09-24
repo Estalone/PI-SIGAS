@@ -114,7 +114,7 @@ if ($supermode)
       </div>
     </div>
   </div>
-	<script src="./js/register.js"></script>
+	<script src="./js/registerUser.js"></script>
 	<script src="./js/localisation.js"></script>
 </body>
 </html>
