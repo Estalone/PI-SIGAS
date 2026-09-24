@@ -1,5 +1,5 @@
 <?php /* coding: utf-8 */
-require_once './inc/connection.php';
+require_once __DIR__.'/../inc/connection.php';
 
 session_start();
 ?>
