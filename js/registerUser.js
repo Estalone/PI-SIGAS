@@ -20,24 +20,24 @@ function exibirMensagem(texto, tipo) {
 // Função de remover a mensagem do login
 function removeMensagem() {
   statusDiv.innerHTML = "";
-  statusDiv.className = ``;
+  statusDiv.className = "";
 }
 
 // Realiza o login do usuário
 const formRegister = document.querySelector("#formRegister");
 
-formRegister.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Cancela o envio do formulário
-  removeMensagem(); // Remove a mensagem de erro se existir
+formRegister.addEventListener("submit",async(e)=>{
+	e.preventDefault(); // Cancela o envio do formulário
+	removeMensagem(); // Remove a mensagem de erro se existir
 
-  const formData = new FormData(formRegister); // Pega os dados vindos do form
-  const data = Object.fromEntries(formData.entries()); // Converte o FormData em um objeto
-  const errors = {}; // Objeto para adicionar os erros de validação
+	const formData = new FormData(formRegister); // Pega os dados vindos do form
+	const data = Object.fromEntries(formData.entries()); // Converte o FormData em um objeto
+	const errors = {}; // Objeto para adicionar os erros de validação
 
-  // Validação básica dos campos
-  if (!data.user_name || data.user_name.trim() === "") {
-    errors.user_name = "Nome é obrigatório.";
-  }
+	// Validação básica dos campos
+	if (!data.user_name||data.user_name.trim()===""){
+		errors.user_name = "Nome é obrigatório.";
+	}
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -73,7 +73,7 @@ formRegister.addEventListener("submit", async (e) => {
       ${errors.user_pwd ? "<br>" + errors.user_pwd : ""}
       ${errors.user_repwd ? "<br>" + errors.user_repwd : ""}
       `,
-      "erro",
+      "erro"
     );
 
     return false;
