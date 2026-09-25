@@ -40,9 +40,9 @@ if (empty($user_type)){
 }
 
 if (empty($email)) {
-    $errors["email"] = "Email é obrigatório.";
+    $errors["email"] = "E-Mail é obrigatório.";
 } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors["email"] = "Informe um e-mail válido.";
+    $errors["email"] = "Informe um endereço de E-Mail válido.";
 }
 
 if (empty($user_pwd)) {
@@ -64,7 +64,7 @@ if(!empty($errors)){
   http_response_code(400);
     echo json_encode([
         "success" => false,
-        "mensagem" => "Verifique os dados informados: " . $mensagemErro
+        "mensagem" => "Verifique os dados informados: ".$mensagemErro
     ]);
     exit;
 }
@@ -90,8 +90,8 @@ $status=0;
 // Prepara e executa a inserção com PDO
 try{
 	// Verifica se o usuário ou E-Mail já estão cadastrados na base
-	$checkSQL="SELECT id FROM users WHERE name = :user_name OR email = :email";
-	$checkStmt=$pdo->prepare($checkSQL);
+	$checkSQL="SELECT id FROM users WHERE name=:user_name OR email=:email";
+	$pdo->prepare($checkSQL);
 	$checkStmt->execute([
 		":user_name"	=> $user_name,
 		":email"		=> $email
