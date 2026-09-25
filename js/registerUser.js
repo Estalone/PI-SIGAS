@@ -95,15 +95,17 @@ formRegister.addEventListener("submit",async(e)=>{
 			}else if(response.status===500){
 				throw new Error("Erro interno no servidor (500). Tente novamente mais tarde.");
 			}else if(response.status===400){
-				throw new Error("O usuário e/ou o E-Mail informado já está cadastrado no sistema.");
+				throw new Error(`E-Mail inválido (${response.status}).`);
+			}else if(response.status===409){
+				throw new Error(`O usuário e/ou o E-Mail informado já está cadastrado no sistema (${response.status}).`);
 			}else{
-				throw new Error(`Erro na requisição: Code ${response.status}.`);
+				throw new Error(`Erro na requisição: código ${response.status}.`);
 			}
 		}
 
 		const data=await response.json();
 		exibirMensagem(
-			`Registro realizado com sucesso! Título: ${data.title}`,
+			`Registro realizado com sucesso: ${data.title}`,
 			"sucesso"
 		);
 	}catch(err){
