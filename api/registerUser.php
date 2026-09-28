@@ -6,7 +6,7 @@ header("Content-Type: application/json; charset=utf-8");
 require_once __DIR__."/../inc/connection.php";
 
 // Bloqueia chamadas via GET
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+if($_SERVER["REQUEST_METHOD"]!=="POST"){
   http_response_code(405);
   echo json_encode(["error" => "Método não permitido."]);
   exit();
@@ -14,42 +14,42 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 // Lista de tipos de usuários permitidos
 $validUserTypes=["up", "uc", "ug", "if", "is", "im", "of", "os", "om", "af", "as", "am"];
-if ($supermode)
+if($supermode)
 	array_push($validUserTypes,"su","pd","dm");
 
 // Recebe e limpa o input do usuário
-$user_name=isset($_POST["user_name"]) ? trim($_POST["user_name"]):"";
-$user_type=isset($_POST["user_type"]) ? trim($_POST["user_type"]):"";
-$email=isset($_POST["email"]) ? trim($_POST["email"]):"";
-$user_pwd=isset($_POST["user_pwd"]) ? trim($_POST["user_pwd"]):"";
-$user_repwd=isset($_POST["user_repwd"]) ? trim($_POST["user_repwd"]):"";
+$user_name=isset($_POST["user_name"])?trim($_POST["user_name"]):"";
+$user_type=isset($_POST["user_type"])?trim($_POST["user_type"]):"";
+$email=isset($_POST["email"])?trim($_POST["email"]):"";
+$user_pwd=isset($_POST["user_pwd"])?trim($_POST["user_pwd"]):"";
+$user_repwd=isset($_POST["user_repwd"])?trim($_POST["user_repwd"]):"";
 
 $errors=[];
 
 // Validação dos campos
-if (empty($user_name)){
+if(empty($user_name)){
     $errors["user_name"]="O nome é obrigatório.";
 }
 
-$user_name = htmlspecialchars($user_name, ENT_QUOTES, "UTF-8");
+$user_name=htmlspecialchars($user_name,ENT_QUOTES,"UTF-8");
 
-if (empty($user_type)){
+if(empty($user_type)){
     $errors["user_type"] = "Selecione o tipo de usuário.";
-}elseif(!in_array($user_type, $validUserTypes, true)){
+}else if(!in_array($user_type, $validUserTypes, true)){
     $errors["user_type"] = "Tipo de usuário inválido.";
 }
 
-if (empty($email)) {
-    $errors["email"] = "E-Mail é obrigatório.";
-} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+if(empty($email)){
+    $errors["email"]="E-Mail é obrigatório.";
+}else if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
     $errors["email"] = "Informe um endereço de E-Mail válido.";
 }
 
-if (empty($user_pwd)) {
+if(empty($user_pwd)){
     $errors["user_pwd"] = "A senha é obrigatória.";
 }
 
-if (empty($user_repwd)) {
+if(empty($user_repwd)){
     $errors["user_repwd"] = "A confirmação de senha é obrigatória.";
 }
 
@@ -91,7 +91,7 @@ $status=0;
 try{
 	// Verifica se o usuário ou E-Mail já estão cadastrados na base
 	$checkSQL="SELECT id FROM users WHERE name=:user_name OR email=:email";
-	$pdo->prepare($checkSQL);
+	$checkStmt=$pdo->prepare($checkSQL);
 	$checkStmt->execute([
 		":user_name"	=> $user_name,
 		":email"		=> $email
